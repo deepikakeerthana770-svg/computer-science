@@ -1,0 +1,399 @@
+"# computer-science" 
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sweet Cravings — Dessert Shop</title>
+  <meta name="description" content="Artisanal desserts made fresh daily. Cakes, pastries, macarons, and more." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#fff9f7;
+      --card:#ffffff;
+      --ink:#2b2b2b;
+      --muted:#6a6a6a;
+      --brand:#d86b65;
+      --brand-dark:#b85651;
+      --accent:#f9d9d2;
+      --shadow: 0 8px 24px rgba(0,0,0,.08);
+      --radius:16px;
+      --radius-sm:12px;
+      --max:1200px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin:0; padding:0; }
+    body {
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
+      color: var(--ink);
+      background: radial-gradient(1200px 600px at 10% -10%, #ffe9e2 0%, rgba(255,233,226,0) 60%), var(--bg);
+      line-height:1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width:100%; display:block; }
+    .container { width: min(100% - 2rem, var(--max)); margin-inline: auto; }
+
+    /* Header */
+    header {
+      position: sticky; top:0; z-index: 50;
+      backdrop-filter: blur(10px);
+      background: rgba(255,255,255,0.6);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .nav {
+      display:flex; align-items:center; justify-content:space-between; padding: 1rem 0;
+    }
+    .brand {
+      display:flex; align-items:center; gap:.6rem; font-weight:700;
+      font-family: "Playfair Display", serif; letter-spacing:.3px; font-size:1.25rem;
+    }
+    .brand-badge {
+      width:36px; height:36px; border-radius:10px; background: linear-gradient(135deg,var(--brand),#f6a49f);
+      display:grid; place-items:center; color:white; font-weight:800;
+      box-shadow: var(--shadow);
+    }
+    nav ul { display:flex; gap:1.25rem; list-style:none; margin:0; padding:0; }
+    nav a { color: var(--muted); font-weight:600; }
+    nav a:hover, nav a.active { color: var(--brand-dark); }
+
+    .menu-btn {
+      display:none; background:#fff; border:1px solid rgba(0,0,0,.08); padding:.5rem .75rem; border-radius:10px;
+    }
+
+    /* Hero */
+    .hero {
+      display:grid; grid-template-columns: 1.1fr .9fr; gap:2rem; align-items:center; padding: 3.5rem 0 2rem;
+    }
+    .hero h1 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2rem, 4vw + 1rem, 3.5rem);
+      line-height:1.1; margin:0 0 .75rem;
+    }
+    .hero p { color: var(--muted); font-size:1.05rem; margin: 0 0 1.25rem; }
+    .cta { display:flex; gap:.75rem; align-items:center; flex-wrap:wrap; }
+    .btn {
+      background: var(--brand);
+      color:#fff; padding:.85rem 1.1rem; border-radius: 12px; border:none; cursor:pointer; font-weight:700;
+      box-shadow: var(--shadow);
+    }
+    .btn.secondary { background: #fff; color: var(--brand); border: 2px solid var(--brand); }
+    .hero-card {
+      background: var(--card); border-radius: var(--radius); padding:1rem; box-shadow: var(--shadow);
+      position: relative; overflow: hidden;
+    }
+    .hero-card img {
+      border-radius: 12px; aspect-ratio: 4/3; object-fit: cover;
+    }
+    .stamp {
+      position:absolute; right:12px; bottom:12px; background: #fff; padding:.5rem .75rem; border-radius: 12px; box-shadow: var(--shadow); font-weight:700; color: var(--brand-dark);
+    }
+
+    /* Section headers */
+    .section { padding: 3rem 0; }
+    .section h2 {
+      font-family: "Playfair Display", serif; font-size: clamp(1.4rem, 2vw + .8rem, 2.2rem); margin:0 0 .5rem;
+    }
+    .section p.lead { color: var(--muted); margin:0 0 1.25rem; }
+
+    /* Menu grid */
+    .grid {
+      display:grid; grid-template-columns: repeat(3, 1fr); gap:1rem;
+    }
+    .card {
+      background: var(--card); border-radius: var(--radius-sm); overflow:hidden; box-shadow: var(--shadow); display:flex; flex-direction:column;
+    }
+    .card img { aspect-ratio: 4/3; object-fit: cover; }
+    .card .content { padding: .9rem .95rem 1.05rem; }
+    .price { color: var(--brand-dark); font-weight:800; }
+    .tag { font-size:.8rem; color:#8a5d59; background: var(--accent); padding:.25rem .5rem; border-radius: 6px; font-weight:600; }
+
+    /* Gallery */
+    .masonry {
+      columns: 3 280px; column-gap: 1rem;
+    }
+    .masonry img {
+      break-inside: avoid; margin: 0 0 1rem; border-radius: 12px; box-shadow: var(--shadow);
+    }
+
+    /* Testimonials */
+    .testimonials {
+      display:grid; grid-template-columns: repeat(3,1fr); gap:1rem;
+    }
+    .quote {
+      background: var(--card); padding:1.1rem; border-radius: 14px; box-shadow: var(--shadow);
+    }
+    .quote .stars { color: #f5a623; letter-spacing: .1rem; }
+
+    /* Contact */
+    form {
+      background: var(--card); padding:1.2rem; border-radius: var(--radius); box-shadow: var(--shadow);
+      display:grid; gap:.8rem;
+    }
+    input, textarea, select {
+      width:100%; padding:.85rem .9rem; border-radius: 10px; border:1px solid rgba(0,0,0,.12); font: inherit; background:#fff;
+    }
+    .inline { display:grid; grid-template-columns: 1fr 1fr; gap:.8rem; }
+
+    /* Footer */
+    footer {
+      margin-top:2.5rem; padding: 2rem 0; color: var(--muted); border-top: 1px solid rgba(0,0,0,.06);
+    }
+
+    /* Responsive */
+    @media (max-width: 900px){
+      .hero { grid-template-columns: 1fr; }
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .testimonials { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px){
+      nav ul { display:none; }
+      .menu-btn { display:block; }
+      .grid { grid-template-columns: 1fr; }
+      .testimonials { grid-template-columns: 1fr; }
+      .inline { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="brand-badge">SC</div>
+        <span>Sweet Cravings</span>
+      </div>
+      <button class="menu-btn" id="menuBtn">Menu ☰</button>
+      <nav id="mainNav">
+        <ul>
+          <li><a href="#home" class="active">Home</a></li>
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="home" class="container">
+    <section class="hero">
+      <div>
+        <h1>Handcrafted desserts that melt in your mouth</h1>
+        <p>From classic French pastries to modern confections, we bake fresh daily using the finest ingredients. Treat yourself to joy — one bite at a time.</p>
+        <div class="cta">
+          <a class="btn" href="#menu">Explore Menu</a>
+          <a class="btn secondary" href="#contact">Order Custom Cake</a>
+        </div>
+        <ul style="margin:1rem 0 0; padding-left:1.2rem; color:var(--muted);">
+          <li>Vegan, gluten-free, and nut-free options</li>
+          <li>Same-day pickup on select items</li>
+          <li>Custom celebration cakes in 48–72 hours</li>
+        </ul>
+      </div>
+      <div class="hero-card">
+        <img src="https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?q=80&w=1600&auto=format&fit=crop" alt="Assorted dessert platter">
+        <div class="stamp">Baked Fresh Daily</div>
+      </div>
+    </section>
+
+    <section id="menu" class="section">
+      <h2>Our Bestsellers</h2>
+      <p class="lead">Crowd favorites you’ll come back for again and again.</p>
+      <div class="grid">
+        <article class="card">
+          <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1200&auto=format&fit=crop" alt="Chocolate cake slice">
+          <div class="content">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h3 style="margin:.2rem 0;">Velvet Chocolate Cake</h3>
+              <span class="price">$6.50</span>
+            </div>
+            <p style="margin:.2rem 0 .6rem; color:var(--muted);">70% dark chocolate ganache, moist crumb, sea salt flakes.</p>
+            <span class="tag">Best Seller</span>
+          </div>
+        </article>
+        <article class="card">
+          <img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?q=80&w=1200&auto=format&fit=crop" alt="Macarons">
+          <div class="content">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h3 style="margin:.2rem 0;">Parisian Macarons</h3>
+              <span class="price">$2.20</span>
+            </div>
+            <p style="margin:.2rem 0 .6rem; color:var(--muted);">Assorted flavors: pistachio, raspberry, lemon, hazelnut.</p>
+            <span class="tag">Gluten-free</span>
+          </div>
+        </article>
+        <article class="card">
+          <img src="https://images.unsplash.com/photo-1461009209120-103fedb9c9d5?q=80&w=1200&auto=format&fit=crop" alt="Strawberry tart">
+          <div class="content">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h3 style="margin:.2rem 0;">Strawberry Custard Tart</h3>
+              <span class="price">$5.80</span>
+            </div>
+            <p style="margin:.2rem 0 .6rem; color:var(--muted);">Buttery crust, vanilla bean custard, fresh berries.</p>
+            <span class="tag">Seasonal</span>
+          </div>
+        </article>
+        <article class="card">
+          <img src="https://images.unsplash.com/photo-1504388192519-c6b8f3d2a9d0?q=80&w=1200&auto=format&fit=crop" alt="Cinnamon roll">
+          <div class="content">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h3 style="margin:.2rem 0;">Cinnamon Roll</h3>
+              <span class="price">$3.90</span>
+            </div>
+            <p style="margin:.2rem 0 .6rem; color:var(--muted);">Brown sugar swirl, vanilla cream cheese icing.</p>
+            <span class="tag">Warm</span>
+          </div>
+        </article>
+        <article class="card">
+          <img src="https://images.unsplash.com/photo-1541782814455-c3ee4a77bf76?q=80&w=1200&auto=format&fit=crop" alt="Cupcakes">
+          <div class="content">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h3 style="margin:.2rem 0;">Assorted Cupcakes (Box)</h3>
+              <span class="price">$14.00</span>
+            </div>
+            <p style="margin:.2rem 0 .6rem; color:var(--muted);">Red velvet, vanilla bean, cookies n’ cream, lemon zest.</p>
+            <span class="tag">Party Pack</span>
+          </div>
+        </article>
+        <article class="card">
+          <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1200&auto=format&fit=crop" alt="Cheesecake slice">
+          <div class="content">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h3 style="margin:.2rem 0;">Classic Cheesecake</h3>
+              <span class="price">$6.20</span>
+            </div>
+            <p style="margin:.2rem 0 .6rem; color:var(--muted);">New York style, graham cracker crust, berry coulis.</p>
+            <span class="tag">Rich & Creamy</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="gallery" class="section">
+      <h2>Sweet Moments</h2>
+      <p class="lead">A peek into our kitchen and creations.</p>
+      <div class="masonry">
+        <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?q=80&w=1200&auto=format&fit=crop" alt="Cookies on tray">
+        <img src="https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?q=80&w=1200&auto=format&fit=crop" alt="Pancakes with berries">
+        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1200&auto=format&fit=crop" alt="Crepes with strawberries">
+        <img src="https://images.unsplash.com/photo-1464305795204-6f5bbfc7fb81?q=80&w=1200&auto=format&fit=crop" alt="Chocolate brownies">
+        <img src="https://images.unsplash.com/photo-1488477304112-4944851de03d?q=80&w=1200&auto=format&fit=crop" alt="Fruit tartlets">
+        <img src="https://images.unsplash.com/photo-1514512364185-4c2b2e0dd4f0?q=80&w=1200&auto=format&fit=crop" alt="Layer cake with berries">
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <h2>About Us</h2>
+      <p class="lead">Baking joy since 2012. Our pastry chefs combine classical technique with playful flavors to craft desserts that feel like a hug.</p>
+      <div class="grid" style="grid-template-columns: 1.3fr .7fr;">
+        <div class="card" style="padding:1rem;">
+          <p>We source local dairy and seasonal fruit, grind our own nut flours, and temper chocolate in-house. Whether you’re celebrating or simply treating yourself, our case is always stocked with something special.</p>
+          <ul>
+            <li>Ethically sourced chocolate and coffee</li>
+            <li>All-natural colorings and flavors</li>
+            <li>Eco-friendly packaging</li>
+          </ul>
+        </div>
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1541976076758-347942db1970?q=80&w=1200&auto=format&fit=crop" alt="Baker decorating cake">
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>What Customers Say</h2>
+      <div class="testimonials">
+        <div class="quote">
+          <div class="stars">★★★★★</div>
+          “The macarons are perfection — crisp shell, chewy center, bold flavors.”
+          <div style="color:var(--muted); margin-top:.4rem;">— Mia R.</div>
+        </div>
+        <div class="quote">
+          <div class="stars">★★★★★</div>
+          “Ordered a custom cake for my daughter’s birthday. Stunning and delicious!”
+          <div style="color:var(--muted); margin-top:.4rem;">— Daniel K.</div>
+        </div>
+        <div class="quote">
+          <div class="stars">★★★★★</div>
+          “Best cinnamon rolls in town. Don’t skip the warm option.”
+          <div style="color:var(--muted); margin-top:.4rem;">— Priya S.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <h2>Get in Touch</h2>
+      <p class="lead">Questions, catering, or custom orders — we’ve got you.</p>
+      <form onsubmit="event.preventDefault(); alert('Thanks! We’ll get back to you soon.');">
+        <div class="inline">
+          <div>
+            <label for="name">Name</label>
+            <input id="name" name="name" placeholder="Your full name" required />
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="you@example.com" required />
+          </div>
+        </div>
+        <div class="inline">
+          <div>
+            <label for="service">Service</label>
+            <select id="service" name="service">
+              <option>Custom Cake</option>
+              <option>Catering</option>
+              <option>Dessert Box</option>
+              <option>General Question</option>
+            </select>
+          </div>
+          <div>
+            <label for="date">Event Date</label>
+            <input id="date" name="date" type="date" />
+          </div>
+        </div>
+        <div>
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="4" placeholder="Tell us about your request"></textarea>
+        </div>
+        <button class="btn" type="submit">Send Message</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container" style="display:flex; flex-wrap:wrap; gap:1rem; justify-content:space-between; align-items:center;">
+      <div>&copy; <span id="year"></span> Sweet Cravings. All rights reserved.</div>
+      <div>123 Baker St, Pastryville • (555) 123-4567 • hello@sweetcravings.example</div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile nav toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const mainNav = document.getElementById('mainNav');
+    menuBtn?.addEventListener('click', () => {
+      const ul = mainNav.querySelector('ul');
+      const isOpen = ul.style.display === 'block';
+      ul.style.display = isOpen ? 'none' : 'block';
+    });
+    // Smooth scroll active link
+    document.querySelectorAll('nav a').forEach(a => {
+      a.addEventListener('click', e => {
+        const href = a.getAttribute('href');
+        if(href?.startsWith('#')){
+          e.preventDefault();
+          document.querySelector(href)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          history.replaceState(null, '', href);
+          document.querySelectorAll('nav a').forEach(n => n.classList.remove('active'));
+          a.classList.add('active');
+          // Close on mobile
+          const ul = mainNav.querySelector('ul');
+          if (getComputedStyle(menuBtn).display !== 'none') ul.style.display = 'none';
+        }
+      });
+    });
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
